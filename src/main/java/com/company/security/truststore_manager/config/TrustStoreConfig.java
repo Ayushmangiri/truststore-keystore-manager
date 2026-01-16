@@ -9,23 +9,23 @@ import java.io.InputStream;
 import java.security.KeyStore;
 
 @Configuration
-public class KeyStoreConfig {
+public class TrustStoreConfig {
 
-    @Value("${crypto.keystore.path}")
+    @Value("${crypto.truststore.path}")
     private String path;
 
-    @Value("${crypto.keystore.password}")
+    @Value("${crypto.truststore.password}")
     private String password;
 
-    @Value("${crypto.keystore.type}")
+    @Value("${crypto.truststore.type}")
     private String type;
 
     @Bean
-    public KeyStore keyStore() throws Exception {
-        KeyStore keyStore = KeyStore.getInstance(type);
+    public KeyStore trustStore() throws Exception {
+        KeyStore trustStore = KeyStore.getInstance(type);
         try (InputStream is = new FileInputStream(path)) {
-            keyStore.load(is, password.toCharArray());
+            trustStore.load(is, password.toCharArray());
         }
-        return keyStore;
+        return trustStore;
     }
 }

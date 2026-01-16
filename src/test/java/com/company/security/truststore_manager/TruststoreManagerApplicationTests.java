@@ -10,4 +10,5 @@ class TruststoreManagerApplicationTests {
 	void contextLoads() {
 	}
 
+
 }
