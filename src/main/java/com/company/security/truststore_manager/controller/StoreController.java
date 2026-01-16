@@ -1,12 +1,12 @@
 package com.company.security.truststore_manager.controller;
 
+import com.company.security.truststore_manager.dto.CertificateDetailsResponse;
 import com.company.security.truststore_manager.service.TrustStoreService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.cert.X509Certificate;
 import java.util.List;
 
 @RestController
@@ -20,13 +20,22 @@ public class StoreController {
     }
 
     @GetMapping("/truststore/aliases")
-    public List<String> listTrustStoreAliases() throws Exception {
+    public List<String> listTrustStoreAliases() {
         return trustStoreService.listCertificates();
     }
 
+    @GetMapping("/truststore/certificate/details/{alias}")
+    public CertificateDetailsResponse getCertificateDetails(
+            @PathVariable String alias) {
+
+        return trustStoreService.getCertificateDetails(alias);
+    }
+
     @GetMapping("/truststore/certificate/{alias}")
-    public String getCertificate(@PathVariable String alias) throws Exception {
-        X509Certificate cert = trustStoreService.getCertificate(alias);
-        return cert.getSubjectX500Principal().getName();
+    public String getCertificate(@PathVariable String alias) {
+        return trustStoreService
+                .getCertificate(alias)
+                .getSubjectX500Principal()
+                .getName();
     }
 }
