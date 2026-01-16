@@ -1,5 +1,4 @@
 package com.company.security.truststore_manager.service;
-package com.company.security.truststore_manager.service;
 
 import org.springframework.stereotype.Service;
 
