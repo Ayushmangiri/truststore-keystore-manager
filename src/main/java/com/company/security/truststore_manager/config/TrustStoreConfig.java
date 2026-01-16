@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
-
+import java.security.cert.X509Certificate;
+import java.util.Enumeration;
 @Configuration
 public class TrustStoreConfig {
 
@@ -23,7 +24,9 @@ public class TrustStoreConfig {
 
     @PostConstruct
     public void logPath() {
-        System.out.println("Truststore path loaded from application.properties: " + path);
+        System.out.println(
+                "Truststore path loaded from application.properties: " + path
+        );
     }
 
     @Bean

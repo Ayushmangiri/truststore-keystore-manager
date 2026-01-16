@@ -2,10 +2,8 @@ package com.company.security.truststore_manager.controller;
 
 import com.company.security.truststore_manager.dto.CertificateDetailsResponse;
 import com.company.security.truststore_manager.service.TrustStoreService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,22 +18,27 @@ public class StoreController {
     }
 
     @GetMapping("/truststore/aliases")
-    public List<String> listTrustStoreAliases() {
-        return trustStoreService.listCertificates();
+    public ResponseEntity<List<String>> listTrustStoreAliases() {
+        return ResponseEntity.ok(trustStoreService.listCertificates());
     }
 
     @GetMapping("/truststore/certificate/details/{alias}")
-    public CertificateDetailsResponse getCertificateDetails(
+    public ResponseEntity<CertificateDetailsResponse> getCertificateDetails(
             @PathVariable String alias) {
 
-        return trustStoreService.getCertificateDetails(alias);
+        return ResponseEntity.ok(
+                trustStoreService.getCertificateDetails(alias)
+        );
     }
 
     @GetMapping("/truststore/certificate/{alias}")
-    public String getCertificate(@PathVariable String alias) {
-        return trustStoreService
+    public ResponseEntity<String> getCertificate(@PathVariable String alias) {
+
+        String subject = trustStoreService
                 .getCertificate(alias)
                 .getSubjectX500Principal()
                 .getName();
+
+        return ResponseEntity.ok(subject);
     }
 }

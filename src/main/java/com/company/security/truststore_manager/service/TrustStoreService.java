@@ -1,6 +1,7 @@
 package com.company.security.truststore_manager.service;
 
 import com.company.security.truststore_manager.dto.CertificateDetailsResponse;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.security.KeyStore;
@@ -19,16 +20,15 @@ public class TrustStoreService {
     }
 
     public List<String> listCertificates() {
-        List<String> aliases = new ArrayList<>();
-
         try {
+            List<String> aliases = new ArrayList<>();
             Enumeration<String> enumeration = trustStore.aliases();
             while (enumeration.hasMoreElements()) {
                 aliases.add(enumeration.nextElement());
             }
             return aliases;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to list truststore aliases", e);
+            throw new RuntimeException("Failed to list truststore certificates", e);
         }
     }
 
@@ -61,6 +61,24 @@ public class TrustStoreService {
             return response;
         } catch (Exception e) {
             throw new RuntimeException("Failed to read certificate details", e);
+        }
+    }
+
+    @PostConstruct
+    public void logCertificates() {
+        try {
+            Enumeration<String> aliases = trustStore.aliases();
+            while (aliases.hasMoreElements()) {
+                String alias = aliases.nextElement();
+                X509Certificate cert =
+                        (X509Certificate) trustStore.getCertificate(alias);
+
+                System.out.println("Loaded certificate alias: " + alias);
+                System.out.println("Subject: " + cert.getSubjectX500Principal());
+                System.out.println("Serial: " + cert.getSerialNumber());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

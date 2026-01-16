@@ -4,6 +4,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 public class CertificateDetailsResponse {
 
     private String alias;
@@ -14,3 +15,4 @@ public class CertificateDetailsResponse {
     private String validTo;
 
 }
+
